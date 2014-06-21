@@ -1,0 +1,65 @@
+ul.task-lists {
+	list-style: none;
+	margin-left: 0;
+
+	> li.task-list {
+		padding: 15px 0;
+		font-weight: bold;
+
+		> h4 {
+			text-decoration: none;
+			margin-bottom: 4px;
+		}
+
+		a {
+			color: #333;
+			text-decoration: none;
+			cursor: pointer;
+
+			&.add-task {
+				color: #999;
+				font-size: 14px;
+			}
+
+			&:hover { 
+				text-decoration: underline;
+			}
+		}
+
+	}
+
+}
+
+.task {
+
+	padding: 2px 0;
+
+	&.complete {
+		text-decoration: line-through;
+	}	
+
+}
+
+/** WordPress specific styles **/
+.entry-content .task {
+
+	input[type="checkbox"] {
+		margin-right: 10px;
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+}
+
+.embee-form {
+
+	> div {
+		display: block;
+		width: 100%;
+		line-height: 40px;
+
+	}
+
+}
