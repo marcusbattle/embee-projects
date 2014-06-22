@@ -1,5 +1,5 @@
 (function($){
-	
+
 	// Create new task list
 	$('.add-task-list').on( 'click', function(e){
 		e.preventDefault();
@@ -35,6 +35,15 @@
 
 	});
 
+	$(document).on( 'click', '.close-form-add-list', function(e){
+		e.preventDefault();
+
+		var task_list = $(this).closest('.task-list');
+		$('.add-task-list').show();
+		$('#form-add-list').hide();
+
+	});
+
 	// 
 	$(document).on( 'click', '.confirm-task', function(e){
 
@@ -58,15 +67,17 @@
 		request.done(function( msg ) {
 
 			if ( msg.success ) {
-				
+
 				$(form_add_task).remove();
 
 				// Check to see if ul.tasks exists
-				if ( $(task_list).contains('ul.tasks') ) {
-					$(task_list).find('ul.tasks').prepend('<li class="task"><input type="checkbox" class="task-checkbox" id="' + msg.task_ID + '" /><a href="' + msg.permalink + '">' + msg.task + '</a></li>');
+				if ( $(task_list).find('ul.tasks').length ) {
+					$(task_list).find('ul.tasks').append('<li class="task"><input type="checkbox" class="task-checkbox" id="' + msg.task_ID + '" /><a href="' + msg.permalink + '">' + msg.task + '</a></li>');
 				} else {
 					$(task_list).find('h4').after('<ul class="tasks"><li class="task"><input type="checkbox" class="task-checkbox" id="' + msg.task_ID + '" /><a href="' + msg.permalink + '">' + msg.task + '</a></li></ul>');
 				}
+
+				$('.add-task').show();
 
 			} else {
 
@@ -78,7 +89,7 @@
 
 	});
 
-	
+	$('li.complete .task-checkbox').attr('checked',true);
 
 	// 
 	$(document).on('click', '.task-checkbox', function(e){
@@ -87,10 +98,10 @@
 		var task_status = '';
 
 		if( $(task).is(':checked') ) {
-			$(task).parent().css('text-decoration','line-through');
+			$(task).parent().addClass('complete').removeClass('incomplete');
 			task_status = 'complete';
 		} else {
-			$(task).parent().css('text-decoration','none');
+			$(task).parent().addClass('incomplete').removeClass('complete');
 			task_status = 'incomplete';
 		}
 
@@ -111,7 +122,7 @@
 			$(task).addClass( msg.task_status );
 
 			if ( !msg.success ) {
-				alert( 'the task was not updated' );
+				alert( 'Error: There was a problem updating the task. Please try again.' );
 			}
 
 		});

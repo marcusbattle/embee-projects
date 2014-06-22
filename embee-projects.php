@@ -400,9 +400,11 @@ function embee_task_ajax_add_task() {
 	if ( !is_user_logged_in() ) {
 		
 		echo json_encode( array(
-			'success' => 'false',
+			'success' => false,
 			'message' => 'You must be logged in to save a task'
 		));
+
+		exit;
 
 	}
 
