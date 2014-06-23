@@ -4,26 +4,28 @@ a.add-task-list, a.close-form-add-list {
 ul.task-lists {
   list-style: none;
   margin-left: 0; }
-  ul.task-lists > li.task-list {
-    padding: 15px 0;
-    font-weight: bold; }
-    ul.task-lists > li.task-list > h4 {
-      text-decoration: none;
-      margin-bottom: 4px; }
-    ul.task-lists > li.task-list a {
-      color: #333;
-      text-decoration: none;
-      cursor: pointer; }
-      ul.task-lists > li.task-list a.add-task {
-        color: #999;
-        font-size: 14px; }
-      ul.task-lists > li.task-list a:hover {
-        text-decoration: underline; }
-  ul.task-lists .tasks {
-    list-style: none;
-    margin-left: 0;
-    margin-bottom: 10px;
-    font-weight: normal; }
+
+.tasks {
+  list-style: none;
+  margin-left: 0;
+  margin-bottom: 10px;
+  font-weight: normal; }
+
+.task-list {
+  padding: 15px 0;
+  font-weight: bold; }
+  .task-list > h4 {
+    text-decoration: none;
+    margin-bottom: 4px; }
+  .task-list a {
+    color: #333;
+    text-decoration: none;
+    cursor: pointer; }
+    .task-list a.add-task {
+      color: #999;
+      font-size: 14px; }
+    .task-list a:hover {
+      text-decoration: underline; }
 
 .task {
   padding: 2px 0; }

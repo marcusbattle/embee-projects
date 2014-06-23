@@ -290,7 +290,7 @@ function embee_project_the_content( $content ) {
 
 	global $post;
 
-	if ( get_post_type() != 'embee_project' )
+	if ( ( get_post_type() != 'embee_project' ) || !is_user_logged_in() )
 		return $content;
 
 	// Set display for archives
@@ -317,29 +317,12 @@ function embee_project_the_content( $content ) {
 
 	$task_lists = wp_list_pages( $args );
 
-
 	$button_todo_list = "<a class=\"add-task-list\">Add Task List</a>";
 
 	$content .= $button_todo_list;
 	$content .= embee_include( plugin_dir_path( __FILE__ ) . '/views/form-add-list.php' );
 	$content .= embee_include( plugin_dir_path( __FILE__ ) . '/views/form-add-task.php' );
 	$content .= "<ul class=\"task-lists\">$task_lists</ul>";
-
-	
-	/*
-	$button_add_task = "<p><a class=\"button add-task\">Add ToDo List</a></p>";
-	$content .= "<ul class=\"tasks\">$tasks</ul>";
-
-	// Add button
-	// if ( is_user_logged_in() ) {
-		
-		$content .= $button_add_task;
-	// }
-
-	$form = embee_include( plugin_dir_path( __FILE__ ) . '/views/form-add-task.php' );
-
-	$content .= $form;
-	*/
 
 	return $content;
 
@@ -353,7 +336,7 @@ function embee_task_the_content( $content ) {
 
 	global $post;
 
-	if ( get_post_type() != 'embee_task' )
+	if ( ( get_post_type() != 'embee_task' ) || !is_user_logged_in() )
 		return $content;
 
 	$project_ID = get_post_meta( $post->ID, 'related_project_ID', true );
@@ -362,16 +345,44 @@ function embee_task_the_content( $content ) {
 	if ( !$project )
 		return $content;
 
-	$project_permalink = get_permalink( $project );
-	$project_link = "<h3><a href=\"$project_permalink\">Project: $project->post_title</a></h3>";
+	$args = array(
+		'post_type' => 'embee_task',
+		'post_status'  => 'publish',
+		'meta_key' => 'related_project_ID',
+		'meta_value' => $project_ID,
+		'child_of' => $post->ID,
+		'title_li' => '',
+		'echo' => false,
+		'sort_column' => 'menu_order',
+		'sort_order' => 'ASC',
+		'walker' => new task_checkboxes
+	);
 
-	$content = $project_link . $content;
+	$tasks = wp_list_pages( $args );
 
-	// Add button
-	// if ( is_user_logged_in() ) {
-		$button_add_task = "<p><a href=\"button add-task\">Add Task</a></p>";
-		$content .= $button_add_task;
-	// }
+	// Display link for 'back' 
+	if ( $post->post_parent ) {
+		
+		$task_list = get_post( $post->post_parent );
+		$task_list_permalink = get_permalink( $post->post_parent );
+		$content .= "<h4><a href=\"$task_list_permalink\">Back To $task_list->post_title</a></h4>";
+
+	} else {
+
+		$project_permalink = get_permalink( $project );
+		$content .= "<h4><a href=\"$project_permalink\">Back To $project->post_title</a></h4>";
+
+	}
+	
+
+	$content .= "<div id=\"$post->ID\" class=\"task-list\">";
+	$content .= "<ul class=\"tasks\">$tasks</ul>";
+		
+	if ( $post->post_parent == 0 ) {
+		$content .= "<a class=\"button add-task\">Add Task</a></div>";
+	}
+
+	$content .= embee_include( plugin_dir_path( __FILE__ ) . '/views/form-add-task.php' );
 
 	return $content;
 }
@@ -528,8 +539,10 @@ class task_checkboxes extends Walker_page {
 		if ( $depth ) {
         	$output .= '</a></li>';
 
-        } else { 
+        } else if ( get_post_type() == 'embee_project' ) { 
         	$output .= "<a class=\"add-task\">Add Task</a></li>";
+        } else {
+        	$output .= '</a></li>';
         }
 
     }
