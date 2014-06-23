@@ -46,7 +46,7 @@ function embee_project_post_type() {
 		'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' )
 	);
 
-	register_post_type( 'embee_project', $args );
+	register_post_type( 'embee_project', $args );		
 
 }
 

@@ -11,7 +11,7 @@
 	});
 
 	// 
-	$('.add-task').on( 'click', function(e) {
+	$(document).on( 'click', '.add-task', function(e) {
 		e.preventDefault();
 
 		$('.add-task').hide();
@@ -49,7 +49,16 @@
 
 		e.preventDefault();
 
-		var form_add_task = $(this).closest('form.form-add-task');
+		if ( $(this).closest('form').hasClass('form-add-task') ) {
+			
+			var form_add_task = $(this).closest('form.form-add-task');
+
+		} else if ( $(this).closest('form').hasClass('form-add-list')  ) {
+		
+			var form_add_task = $(this).closest('form.form-add-list');
+
+		}
+
 		var task_list = $(this).closest('.task-list');
 
 		var request = $.ajax({
@@ -68,15 +77,23 @@
 
 			if ( msg.success ) {
 
-				$(form_add_task).remove();
+				// Create task list if response came from task list form
+				if ( $(form_add_task).hasClass('form-add-list')  ) {
+					$('a.close-form-add-list').click();
+					$('ul.task-lists').prepend('<li id="' + msg.task_ID + '" class="task-list"><h4><a href="' + msg.permalink + '">' + msg.task + '</a></h4><a class="add-task">Add Task</a></li>');
 
-				// Check to see if ul.tasks exists
+					return true;
+
+				}
+
+				// Else add response to existing task list 
 				if ( $(task_list).find('ul.tasks').length ) {
 					$(task_list).find('ul.tasks').append('<li class="task"><input type="checkbox" class="task-checkbox" id="' + msg.task_ID + '" /><a href="' + msg.permalink + '">' + msg.task + '</a></li>');
 				} else {
 					$(task_list).find('h4').after('<ul class="tasks"><li class="task"><input type="checkbox" class="task-checkbox" id="' + msg.task_ID + '" /><a href="' + msg.permalink + '">' + msg.task + '</a></li></ul>');
 				}
 
+				$(form_add_task).remove();
 				$('.add-task').show();
 
 			} else {

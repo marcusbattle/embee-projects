@@ -1,7 +1,7 @@
 <?php 
 	global $post; 
 ?>
-<form id="form-add-list" class="embee-form" style="display: none;">
+<form id="form-add-list" class="embee-form form-add-list" style="display: none;">
 	<!-- <small>Assign it to a person, group or just write it</small> -->
 	<div>
 		<input type="text" name="task" placeholder="What is this list about?" style="width: 100%;" autocomplete="off" />
