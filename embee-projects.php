@@ -470,7 +470,19 @@ function embee_task_ajax_update_task() {
 add_action( 'wp_ajax_nopriv_update_task', 'embee_task_ajax_update_task' );
 add_action( 'wp_ajax_update_task', 'embee_task_ajax_update_task' );
 
+/*
+*/
+function embee_project_admin_bar() {
 
+	if ( in_array( get_post_type(), array( 'embee_project', 'embee_task' ) ) ) {
+		return false;
+	} else {
+		return true;
+	}
+	
+}
+
+add_filter('show_admin_bar', 'embee_project_admin_bar');
 
 
 function embee_include( $file_path ) {
