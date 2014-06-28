@@ -487,8 +487,6 @@ function embee_project_admin_bar() {
 
 	if ( in_array( get_post_type(), array( 'embee_project', 'embee_task' ) ) ) {
 		return false;
-	} else {
-		return true;
 	}
 	
 }
