@@ -548,16 +548,6 @@ function my_get_posts( $query ) {
 
 add_filter( 'pre_get_posts', 'my_get_posts' );
 
-function embee_idea_post_data( $data , $postarr ) {
-	
-	if ( $data['post_type'] == 'embee_idea' )
-		$data['post_status'] = 'private';
-
-	return $data;
-
-}
-
-add_filter( 'wp_insert_post_data', 'embee_idea_post_data', '99', 2 );
 
 function embee_idea_title_filter( $title ) {
 
