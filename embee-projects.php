@@ -561,8 +561,11 @@ add_filter( 'wp_insert_post_data', 'embee_idea_post_data', '99', 2 );
 
 function embee_idea_title_filter( $title ) {
 
-	if ( get_post_type() == 'embee_idea' ) 
+	global $id;
+
+	if ( $id && ( get_post_type( $id ) == 'embee_idea' ) ) {
 		$title = "Idea: " . $title;
+	}
 
 	return $title;
 
