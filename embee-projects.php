@@ -554,7 +554,7 @@ function embee_idea_title_filter( $title ) {
 	global $id, $wp_query;
 
 	if ( $id &&  $wp_query->is_main_query() && ( get_post_type( $id ) == 'embee_idea' ) ) {
-		$title = "Idea: " . $title;
+		// $title = "Idea: " . $title;
 	}
 
 	return $title;
